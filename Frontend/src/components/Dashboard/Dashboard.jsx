@@ -1,14 +1,10 @@
-// Dashboard.jsx
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import Sidebar from '../Sidebar/Sidebar';
-import Navbar from '../Navbar/Navbar';
-import Layout from '../layout';
-import { Outlet } from 'react-router-dom';
+import Layout from '../layout'; // já contém o <Outlet />
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,18 +13,7 @@ const Dashboard = () => {
     }
   }, [user, navigate]);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
-
-  return (
-    <div style={{ padding: '20px' }}>
-      <Layout>
-        <Outlet /> {/* Aqui é onde será renderizado Page1, Page2, etc. */}
-      </Layout>
-    </div>
-  );
+  return <Layout />; // Sem Outlet aqui
 };
 
 export default Dashboard;

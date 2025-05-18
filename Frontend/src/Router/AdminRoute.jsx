@@ -1,8 +1,8 @@
-// PrivateRoute.jsx
+// AdminRoute.jsx
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-export const PrivateRoute = () => {
+export const AdminRoute = () => {
   const { user } = useAuth();
-  return user ? <Outlet /> : <Navigate to="/" />;
+  return user?.tipo === "admin" ? <Outlet /> : <Navigate to="/dashboard" />;
 };

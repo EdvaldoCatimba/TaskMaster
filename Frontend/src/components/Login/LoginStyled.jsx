@@ -106,6 +106,9 @@ export const LoginStyled = styled.div`
     color: #1D4ED8;
   }
 
+
+  
+
   /* Responsividade */
   @media (max-width: 1024px) {
     .content-form {
@@ -113,6 +116,7 @@ export const LoginStyled = styled.div`
       height: auto;
     }
   }
+
 
   @media (max-width: 768px) {
     .content-form {
@@ -137,3 +141,6 @@ export const LoginStyled = styled.div`
     }
   }
 `;
+
+
+

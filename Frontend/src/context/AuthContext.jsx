@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const AuthContext = createContext();
 
@@ -11,32 +12,33 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
 
   const login = async (email, password) => {
-    setLoading(true);
-    try {
-      const response = await fetch('http://localhost:3001/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+  setLoading(true);
+  try {
+    const response = await fetch('http://localhost:3001/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-      if (!response.ok) {
-        return false;
-      }
+    const result = await response.json(); // <-- Pega o corpo da resposta, com ou sem erro
 
-      const userData = await response.json();
-      setUser(userData);
-      localStorage.setItem('user', JSON.stringify(userData));
-      return true;
-
-    } catch (err) {
-      console.error('Erro ao fazer login:', err);
-      return false;
-    } finally {
-      setLoading(false);
+    if (!response.ok) {
+      return { success: false, message: result.message || 'Erro ao fazer login.' };
     }
-  };
+
+    setUser(result);
+    localStorage.setItem('user', JSON.stringify(result));
+    return { success: true, ...result };
+  } catch (err) {
+    console.error('Erro ao fazer login:', err);
+    return { success: false, message: 'Erro ao se conectar com o servidor.' };
+  } finally {
+    setLoading(false);
+  }
+};
+
   const registerUser = async (nome, email, password, confirmarPassword) => {
   setLoading(true);
   
@@ -73,6 +75,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
+    toast.dismiss()
   };
 
   return (

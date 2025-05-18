@@ -6,15 +6,15 @@ app.use(cors());
 app.use(express.json()); // para aceitar JSON no corpo da requisição
 
 const users = [
-  { id: 1, email: 'teste@email.com', password: '123456', nome: 'João' },
-  { id: 2, email: 'user@teste.com', password: 'senha123', nome: 'Maria' },
-  { id: 3, email: 'edvaldo@gmail.com', password: '1234', nome: 'Edvaldo' },
+  { id: 1, email: 'teste@email.com', password: '123456', nome: 'João Silva',tipo:'user'},
+  { id: 2, email: 'user@teste.com', password: 'senha123', nome: 'Maria Ntangu',tipo:'user' },
+  { id: 3, email: 'edvaldo@gmail.com', password: '1234', nome: 'Edvaldo Catimba',tipo:'admin' },
 ];
 
 // Login
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
-
+  console.log(users)
   const user = users.find(u => u.email === email && u.password === password);
 
   if (!user) {
@@ -25,6 +25,19 @@ app.post('/api/login', (req, res) => {
   const { password: _, ...userData } = user;
   return res.status(200).json(userData);
 });
+
+app.get('/api/login', (req, res) => {
+  
+  const user = users
+
+  if (!user) {
+    return res.status(401).json({ message: 'Não existe nenhum user' });
+  }
+
+  // Retorna os dados sem a senha
+  const { password: _, ...userData } = user;
+  return res.status(200).json(userData);
+})
 
 // Registro
 app.post('/api/register', (req, res) => {
